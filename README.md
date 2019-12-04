@@ -1,0 +1,1 @@
+# ceph-daemon-adoption-corpus
