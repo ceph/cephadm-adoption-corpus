@@ -34,8 +34,15 @@ done
 SYMLINKS=$(find $TMPDIR -type l)
 for symlink in $SYMLINKS; do
     file -L $symlink |  grep "block special" || exit 1
-    dd if=$symlink of=$symlink.dev conv=sparse
-    rm -f $symlink && ln -s $(basename $symlink.dev) $symlink
+
+    # convert the block dev into a sparse file
+    blockdev=${TMPDIR}/$(realpath $symlink)
+    mkdir -p $(dirname $blockdev)
+    dd if=$symlink of=$blockdev conv=sparse
+
+    # symlink to the sparse file
+    symlink_tgt=$(realpath --relative-to=$(dirname $symlink) $blockdev)
+    rm -f $symlink && ln -s $symlink_tgt $symlink
 done
 
 # Output the tarball
