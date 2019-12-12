@@ -1,8 +1,7 @@
 #!/bin/bash -ex
 
 #
-# Generates a tarball for use with
-# the standalone `ceph-daemon` tests.
+# Generates a tarball for use with the `cephadm` tests
 #
 
 DIRS=(
